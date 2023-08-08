@@ -24,7 +24,12 @@
   <div class="field">
     <%= form.label :state %>
     <%= form.select :state, ['open', 'closed'] %>
-  </div>  
+  </div>
+
+  <div class="field">
+    <%= form.label :coordinator_ids, 'coordinators' %>
+    <%= form.collection_select :coordinators_ids, @coordinators, :id, :name, {}, multiple: true %>
+  </div>
 
   <div class="actions">
     <%= form.submit %>

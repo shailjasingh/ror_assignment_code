@@ -13,18 +13,20 @@ class RegistriesController < ApplicationController
   # GET /registries/new
   def new
     @registry = Registry.new
+    @coordinators = Coordinator.all
   end
 
   # GET /registries/1/edit
   def edit
+    @coordinators = Coordinator.all
   end
 
   # POST /registries or /registries.json
   def create
     @registry = Registry.new(registry_params)
-
+    @registry.coordinators << Coordinator.find(params[:registry][:coordinators_ids].reject(&:blank?))
     respond_to do |format|
-      if @registry.save
+      if @registry.save!
         format.html { redirect_to registry_url(@registry), notice: "Registry was successfully created." }
         format.json { render :show, status: :created, location: @registry }
       else
@@ -65,6 +67,6 @@ class RegistriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def registry_params
-      params.require(:registry).permit(:name, :location)
+      params.require(:registry).permit(:name, :location, coordinator_ids: [] )
     end
 end
