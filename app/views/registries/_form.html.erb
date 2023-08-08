@@ -23,7 +23,7 @@
 
   <div class="field">
     <%= form.label :state %>
-    <%= form.select :state, ['open', 'closed'] %>
+    <%= form.select :state, %w{open closed}, :prompt => 'Select', required: true, placeholder: 'closed', class: 'form-control' %>
   </div>
 
   <div class="field">

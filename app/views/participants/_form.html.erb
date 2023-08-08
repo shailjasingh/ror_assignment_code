@@ -18,12 +18,17 @@
 
   <div class="field">
     <%= form.label :gender %>
-    <%= form.text_field :gender %>
+    <%= form.select :gender, %w{Male Female}, :prompt => 'Select', required: true, placeholder: 'Gender', class: 'form-control' %>
   </div>
 
   <div class="field">
     <%= form.label :dob %>
     <%= form.text_field :dob %>
+  </div>
+
+  <div class="field">
+    <%= form.label :registry_ids, 'registries' %>
+    <%= form.collection_select :registry_ids, @registries, :id, :name, {} %>
   </div>
 
   <div class="actions">

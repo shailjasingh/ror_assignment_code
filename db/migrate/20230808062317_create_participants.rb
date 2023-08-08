@@ -4,7 +4,8 @@ class CreateParticipants < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :gender, :limit => 1
       t.string :dob
-
+      # add registery
+      t.belongs_to :registry, null: false
       t.timestamps
     end
   end

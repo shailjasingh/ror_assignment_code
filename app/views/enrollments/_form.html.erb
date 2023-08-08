@@ -1,0 +1,42 @@
+<%= form_with(model: enrollment, local: true) do |form| %>
+  <% if enrollment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(enrollment.errors.count, "error") %> prohibited this enrollment from being saved:</h2>
+
+      <ul>
+      <% enrollment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :date_of_enrollment %>
+    <%= form.date_field :date_of_enrollment, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %> 
+  </div>
+
+  <div class="field">
+    <%= form.label :remarks %>
+    <%= form.text_field :remarks %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contact_mode %>
+    <%= form.select :contact_mode, ['phone', 'email'] %>
+  </div>
+
+  <div class="field">
+    <%= form.label :coordinator_ids, 'coordinators' %>
+    <%= form.collection_select :coordinators_ids, @coordinators, :id, :name, {}%>
+  </div>
+
+  <div class="field">
+    <%= form.label :coordinator_ids, 'participants' %>
+    <%= form.collection_select :participants_ids, @participants, :id, :name, {} %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

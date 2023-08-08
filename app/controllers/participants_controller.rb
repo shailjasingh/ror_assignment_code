@@ -13,18 +13,20 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   def new
     @participant = Participant.new
+    @registries = Registry.where(state: "open")
   end
 
   # GET /participants/1/edit
   def edit
+    @registries = Registry.where(state: "open")
   end
 
   # POST /participants or /participants.json
   def create
     @participant = Participant.new(participant_params)
-
+    @participant.registry = Registry.find params[:participant][:registry_ids]
     respond_to do |format|
-      if @participant.save
+      if @participant.save!
         format.html { redirect_to participant_url(@participant), notice: "Participant was successfully created." }
         format.json { render :show, status: :created, location: @participant }
       else
@@ -56,6 +58,14 @@ class ParticipantsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def aggregate_count_by_dob
+    @participants = Participant.all.group_by{|m| m.dob}
+  end
+
+  def aggregate_count_by_coordinator_and_gender
+    @participants = Participant.joins(:coordinators).group('gender', 'coordinators.id')
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -65,6 +75,6 @@ class ParticipantsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def participant_params
-      params.require(:participant).permit(:name, :gender, :dob)
+      params.require(:participant).permit(:name, :gender, :dob, registry_ids: [])
     end
 end
